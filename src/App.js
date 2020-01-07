@@ -8,7 +8,9 @@ const validationSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "Minimo de dois caracterers")
     .required("Nome de usuário deve ser inserido"),
-  fruits: Yup.array().min(1).required('É necessário uma fruta no minimo')
+  fruits: Yup.array()
+    .min(1)
+    .required("É necessário uma fruta no minimo")
 });
 
 function App() {
@@ -58,6 +60,17 @@ function App() {
             <div>
               <button type="submit">Enviar</button>
             </div>
+            <button
+              type="button"
+              onClick={() => {
+                props.setValues({
+                  username: "Manjaro",
+                  fruits: [{ id: 2, label: "maçã" }]
+                });
+              }}
+            >
+              Mudar o conteudo do formulário
+            </button>
           </Form>
         )}
       </Formik>
