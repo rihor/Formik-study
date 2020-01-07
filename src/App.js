@@ -1,24 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
+
+import Select from "./components/Select";
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(2, "Minimo de dois caracterers")
+    .required("Nome de usuário deve ser inserido"),
+  fruits: Yup.array().min(1).required('É necessário uma fruta no minimo')
+});
 
 function App() {
+  const fruits = [
+    { id: 1, label: "banana" },
+    { id: 2, label: "maçã" },
+    { id: 3, label: "abacaxi" }
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Formik
+        initialValues={{ username: "", fruits: [] }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { resetForm }) => {
+          alert(JSON.stringify(values));
+          resetForm();
+        }}
+      >
+        {props => (
+          <Form>
+            <div>
+              <label>Username</label>
+              <Field
+                type="text"
+                placeholder="Seu nome de usuário"
+                name="username"
+              />
+              {props.touched.username && props.errors.username && props && (
+                <div>{props.errors.username}</div>
+              )}
+            </div>
+
+            <div>
+              <Select
+                name="fruits"
+                options={fruits}
+                multiple
+                value={props.values.fruits}
+                onChange={props.setFieldValue}
+                onBlur={props.setFieldTouched}
+                error={props.errors.fruits}
+                touched={props.touched.fruits}
+              />
+            </div>
+
+            <div>
+              <button type="submit">Enviar</button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }
