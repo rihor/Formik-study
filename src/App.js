@@ -3,27 +3,27 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 
 import Select from "./components/Select";
+import DatePicker from "./components/DatePicker";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "Minimo de dois caracterers")
     .required("Nome de usuário deve ser inserido"),
-  fruits: Yup.array()
-    .min(1)
-    .required("É necessário uma fruta no minimo")
+  fruits: Yup.array().min(1, "É necessário uma fruta no minimo"),
+  date: Yup.string().required("A data é necessária")
 });
 
-function App() {
-  const fruits = [
-    { id: 1, label: "banana" },
-    { id: 2, label: "maçã" },
-    { id: 3, label: "abacaxi" }
-  ];
+const fruits = [
+  { id: 1, label: "banana" },
+  { id: 2, label: "maçã" },
+  { id: 3, label: "abacaxi" }
+];
 
+function App() {
   return (
     <div>
       <Formik
-        initialValues={{ username: "", fruits: [] }}
+        initialValues={{ username: "", fruits: [], date: "" }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           alert(JSON.stringify(values));
@@ -58,6 +58,17 @@ function App() {
             </div>
 
             <div>
+              <DatePicker
+                name="date"
+                value={props.values.date}
+                onChange={props.setFieldValue}
+                onBlur={props.setFieldTouched}
+                error={props.errors.date}
+                touched={props.touched.date}
+              />
+            </div>
+
+            <div>
               <button type="submit">Enviar</button>
             </div>
             <button
@@ -65,7 +76,7 @@ function App() {
               onClick={() => {
                 props.setValues({
                   username: "Manjaro",
-                  fruits: [{ id: 2, label: "maçã" }]
+                  fruits: [{ id: 2, label: "maçã", date: "" }]
                 });
               }}
             >
