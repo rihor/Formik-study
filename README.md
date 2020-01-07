@@ -1,3 +1,7 @@
+# Formik study
+
+Formik não tem muitos exemplos em sua documentação, então eu fiz um exemplo de uso com o `react-select` e o `react-datepicker`.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
