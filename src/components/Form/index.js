@@ -4,13 +4,15 @@ import { Formik, Form, Field } from "formik";
 
 import Select from "../Select";
 import DatePicker from "../DatePicker";
+import FileInput from "../FileInput";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "Minimo de dois caracterers")
     .required("Nome de usuário deve ser inserido"),
   fruits: Yup.array().min(1, "É necessário uma fruta no minimo"),
-  date: Yup.string().required("A data é necessária")
+  date: Yup.string().required("A data é necessária"),
+  files: Yup.array().of(Yup.number())
 });
 
 const fruits = [
@@ -22,7 +24,7 @@ const fruits = [
 export default function MyForm() {
   return (
     <Formik
-      initialValues={{ username: "", fruits: [], date: "" }}
+      initialValues={{ username: "", fruits: [], date: "", file: [] }}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
         alert(JSON.stringify(values));
@@ -58,7 +60,19 @@ export default function MyForm() {
 
           <div>
             <DatePicker
+              label="Selecione uma data"
               name="date"
+              value={props.values.date}
+              onChange={props.setFieldValue}
+              onBlur={props.setFieldTouched}
+              error={props.errors.date}
+              touched={props.touched.date}
+            />
+          </div>
+
+          <div className="form-group">
+            <FileInput
+              name="files"
               value={props.values.date}
               onChange={props.setFieldValue}
               onBlur={props.setFieldTouched}

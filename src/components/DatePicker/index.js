@@ -15,7 +15,9 @@ function MyDatePicker(props) {
 
   return (
     <>
+      {props.label && <label htmlFor={props.name} >{props.label}</label>}
       <DatePicker
+        id={props.name}
         name={props.name}
         selected={props.value}
         onChange={handleChange}
